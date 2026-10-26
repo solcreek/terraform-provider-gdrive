@@ -1,0 +1,35 @@
+---
+page_title: "Provider: Google Drive"
+description: |-
+  Manage Google Workspace Shared Drives, folders, and direct permissions.
+---
+
+# Google Drive Provider
+
+An independently maintained provider for Google Workspace Shared Drive administration using Google's official Drive API v3 Go SDK. The provider supports both OpenTofu and Terraform. This initial release is experimental; live Workspace acceptance has not yet been completed.
+
+Use the full `registry.opentofu.org/solcreek/gdrive` source address with either CLI. Registry availability depends on completion of the initial OpenTofu registration.
+
+## Example Usage
+
+{{ tffile "examples/provider/provider.tf" }}
+
+## Authentication
+
+The default is Application Default Credentials. Explicit alternatives are an OAuth access token, a service-account key file, or ADC-backed service-account impersonation. The `subject` setting enables Workspace domain-wide delegation and requires either a service-account key or impersonation target.
+
+The provider requests the `https://www.googleapis.com/auth/drive` scope. Enable Drive API in the Google Cloud project. For keyless impersonation, enable IAM Service Account Credentials API and grant the source identity the required service-account signing/token permissions. Authorize the service account's OAuth client ID and Drive scope in the Workspace Admin Console when using domain-wide delegation.
+
+Google Cloud IAM roles do not grant Drive content access. `use_domain_admin_access` applies only to API operations supporting domain administration. Folders still require appropriate content permissions.
+
+See the repository's [authentication guide](https://github.com/solcreek/terraform-provider-gdrive/blob/main/docs/authentication.md) for configuration and token handling.
+
+## Lifecycle behavior
+
+Shared Drives and folders default to `deletion_protection = true`. Apply `false` before destroying them. Shared Drives must be empty; folder destruction moves the folder and its contents to trash. The provider does not permanently delete folder contents.
+
+Permissions are managed individually. Import existing direct grants before managing them. Inherited-only grants must be changed on their originating parent. Avoid concurrently managing the same permission through multiple resources, provider aliases, or separate state files.
+
+Read operations remove managed resources from state on HTTP 404. Google can also return 404 when an object is inaccessible; check authentication and access before approving a replacement plan. HTTP 403 retains state and reports an error.
+
+{{ .SchemaMarkdown }}

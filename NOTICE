@@ -1,0 +1,14 @@
+Terraform / OpenTofu Provider for Google Drive
+Source: https://github.com/solcreek/terraform-provider-gdrive
+Original source is licensed under Mozilla Public License 2.0.
+
+This is an independent community project, not a Google product.
+Google Drive and Google Workspace are trademarks of Google LLC.
+
+The provider uses the official google.golang.org/api/drive/v3 SDK (BSD-3-Clause)
+and the Terraform Plugin Framework (MPL-2.0). Dependencies retain their own
+licenses and copyright notices. Release archives include dependency licenses,
+notices, and source where required under third_party/. Dependency source
+versions are recorded in go.mod and go.sum at the corresponding release tag.
+
+No source from hanneshayashi/terraform-provider-gdrive is included.

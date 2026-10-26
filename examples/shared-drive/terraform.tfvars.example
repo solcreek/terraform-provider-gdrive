@@ -1,0 +1,8 @@
+service_account = "drive-terraform@YOUR_PROJECT.iam.gserviceaccount.com"
+workspace_admin = "admin@example.com"
+drive_name      = "Engineering"
+
+group_roles = {
+  "drive-managers@example.com" = "organizer"
+  "engineering@example.com"   = "writer"
+}

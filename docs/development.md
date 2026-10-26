@@ -54,7 +54,7 @@ Credentials come from the documented provider environment variables or ADC. Live
 
 ## Release
 
-The release layout follows `solcreek/terraform-provider-gandi`: per-platform ZIPs, SHA256SUMS with detached GPG signature, and a protocol-6 manifest. Release archives also include third-party license notices and source when required. A release tag runs the same CI checks before producing a draft GitHub release; publish the draft only after verifying assets and signatures.
+The release layout follows `solcreek/terraform-provider-gandi`: per-platform ZIPs, SHA256SUMS with detached GPG signature, and a protocol-6 manifest. Release archives also include third-party license notices and source when required. A release tag runs the same CI checks, then publishes the GitHub release with its notes taken from the matching `## X.Y.Z` section of `CHANGELOG.md`; the job fails if that section is missing. GoReleaser uploads every asset to a draft and publishes it only after the uploads finish, which keeps it compatible with immutable releases. Because a published release cannot be changed, verify the build on a snapshot (`goreleaser release --snapshot --clean`) before tagging.
 
 The signing fingerprint must match the key already registered for Solcreek in the OpenTofu registry: `2DF6EA201129324B19FFCCD6CF721E16E07047D5`. Never replace it without updating the registry key registration.
 

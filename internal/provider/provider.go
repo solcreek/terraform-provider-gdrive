@@ -74,6 +74,8 @@ func (p *GDriveProvider) Configure(ctx context.Context, req provider.ConfigureRe
 	r.DataSourceData = c
 }
 func (p *GDriveProvider) Resources(context.Context) []func() resource.Resource {
-	return []func() resource.Resource{NewSharedDriveResource, NewFolderResource}
+	return []func() resource.Resource{NewSharedDriveResource, NewFolderResource, NewPermissionResource}
 }
-func (p *GDriveProvider) DataSources(context.Context) []func() datasource.DataSource { return nil }
+func (p *GDriveProvider) DataSources(context.Context) []func() datasource.DataSource {
+	return []func() datasource.DataSource{NewSharedDriveDataSource, NewFileDataSource, NewPermissionsDataSource}
+}

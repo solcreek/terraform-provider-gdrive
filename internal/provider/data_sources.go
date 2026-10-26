@@ -2,12 +2,15 @@
 package provider
 
 import (
+	"cmp"
 	"context"
+	"slices"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/solcreek/terraform-provider-gdrive/internal/drive"
+	api "google.golang.org/api/drive/v3"
 )
 
 type dataSourceBase struct{ client *configuredClient }
@@ -161,6 +164,7 @@ func (d *permissionsDataSource) Read(ctx context.Context, req datasource.ReadReq
 		apiError(&res.Diagnostics, "list permissions", err)
 		return
 	}
+	slices.SortFunc(values, func(a, b *api.Permission) int { return cmp.Compare(a.Id, b.Id) })
 	m.Permissions = []permissionEntry{}
 	for _, p := range values {
 		if p.Deleted {

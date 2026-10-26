@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"regexp"
 	"strings"
 	"sync"
 	"testing"
@@ -274,6 +275,7 @@ resource "gdrive_permission" "test" {
  email_address = "team@example.com"
  role = %q
 }
+
 data "gdrive_permissions" "test" { file_id = gdrive_permission.test.file_id }
 `, role)
 	}
@@ -287,4 +289,38 @@ data "gdrive_permissions" "test" { file_id = gdrive_permission.test.file_id }
 	if len(f.permissions["root-drive"]) != 1 || f.permissions["root-drive"]["unrelated"] == nil {
 		t.Fatalf("unrelated ACL altered or managed permission not deleted: %v", f.permissions)
 	}
+}
+
+func TestProtocolPermissionPrincipalValidation(t *testing.T) {
+	for _, principal := range []string{"user", "group", "domain", "anyone"} {
+		t.Run(principal, func(t *testing.T) {
+			f := newFakeDrive()
+			factory := protocolFactory(t, f)
+			fields := ""
+			switch principal {
+			case "user", "group":
+				fields = `email_address = "principal@example.com"`
+			case "domain":
+				fields = `domain = "example.com"`
+			}
+			config := fmt.Sprintf(`provider "gdrive" {}
+resource "gdrive_permission" "test" {
+ file_id = "root-drive"
+ type = %q
+ role = "reader"
+ %s
+}`, principal, fields)
+			resource.UnitTest(t, resource.TestCase{ProtoV6ProviderFactories: factory, Steps: []resource.TestStep{{Config: config}, {ResourceName: "gdrive_permission.test", ImportState: true, ImportStateVerify: true}}})
+		})
+	}
+}
+
+func TestProtocolMissingPrincipalRejected(t *testing.T) {
+	f := newFakeDrive()
+	resource.UnitTest(t, resource.TestCase{ProtoV6ProviderFactories: protocolFactory(t, f), Steps: []resource.TestStep{{Config: `provider "gdrive" {}
+resource "gdrive_permission" "test" {
+ file_id = "root-drive"
+ type = "group"
+ role = "reader"
+}`, ExpectError: regexp.MustCompile("Missing principal")}}})
 }

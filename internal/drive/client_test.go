@@ -158,3 +158,23 @@ func TestDeleteDriveNeverDeletesContents(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestDomainPermissionOmitsNotificationParameter(t *testing.T) {
+	c := testClient(t, func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Query().Has("sendNotificationEmail") {
+			t.Error("notification flag sent for domain principal")
+		}
+		var v map[string]any
+		if err := json.NewDecoder(r.Body).Decode(&v); err != nil {
+			t.Fatal(err)
+		}
+		if value, ok := v["allowFileDiscovery"]; !ok || value != false {
+			t.Error("explicit discovery=false was lost")
+		}
+		fmt.Fprint(w, `{"id":"domain-permission","type":"domain","domain":"example.com","role":"reader"}`)
+	})
+	_, err := c.CreatePermission(context.Background(), "drive", &api.Permission{Type: "domain", Domain: "example.com", Role: "reader", ForceSendFields: []string{"AllowFileDiscovery"}}, true, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+}

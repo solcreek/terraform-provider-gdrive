@@ -173,7 +173,11 @@ func (c *Client) GetPermission(ctx context.Context, file, id string, admin bool)
 func (c *Client) CreatePermission(ctx context.Context, file string, v *api.Permission, admin, notify bool) (out *api.Permission, err error) {
 	err = c.call(ctx, false, func() error {
 		var e error
-		out, e = c.Service.Permissions.Create(file, v).SupportsAllDrives(true).UseDomainAdminAccess(admin).SendNotificationEmail(notify).Fields(PermissionFields).Context(ctx).Do()
+		call := c.Service.Permissions.Create(file, v).SupportsAllDrives(true).UseDomainAdminAccess(admin).Fields(PermissionFields).Context(ctx)
+		if v.Type == "user" || v.Type == "group" {
+			call.SendNotificationEmail(notify)
+		}
+		out, e = call.Do()
 		return e
 	})
 	return

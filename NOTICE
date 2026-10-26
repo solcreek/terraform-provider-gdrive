@@ -10,5 +10,3 @@ and the Terraform Plugin Framework (MPL-2.0). Dependencies retain their own
 licenses and copyright notices. Release archives include dependency licenses,
 notices, and source where required under third_party/. Dependency source
 versions are recorded in go.mod and go.sum at the corresponding release tag.
-
-No source from hanneshayashi/terraform-provider-gdrive is included.

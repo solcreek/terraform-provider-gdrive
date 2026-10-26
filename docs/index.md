@@ -64,4 +64,3 @@ Read operations remove managed resources from state on HTTP 404. Google can also
 - `subject` (String) Workspace user for domain-wide delegation. GDRIVE_SUBJECT fallback. Requires key or impersonation.
 - `use_domain_admin_access` (Boolean) Use domain administrator access for Drive and permission operations. Defaults to false; does not grant access to file contents.
 
-

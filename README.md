@@ -94,8 +94,6 @@ The SDK is pinned to `google.golang.org/api v0.308.0`, verified against `@latest
 
 [Development instructions](docs/development.md) cover local installation, opt-in live acceptance, signing, and registry submission. CI checks unit tests, race detection, both CLI protocols, generated docs, dependency licenses, and reachable vulnerabilities. Releases contain signed checksums, a protocol manifest, and dependency notices/source where required.
 
-## License and provenance
+## License
 
 [Mozilla Public License 2.0](LICENSE). Dependencies retain their original licenses; see [NOTICE](NOTICE) and the release archives' `third_party/` contents.
-
-Implementation is based on public Google API specifications and the Terraform Plugin Framework. No code from the GPL-licensed `hanneshayashi/gdrive` provider is included. Its public documentation was consulted during the earlier evaluation; this project does not claim a formally isolated clean-room process.

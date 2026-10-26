@@ -33,6 +33,15 @@ func AuthenticatedClient(ctx context.Context, a AuthConfig) (*http.Client, error
 	if err := a.Validate(); err != nil {
 		return nil, err
 	}
+	// Framework Configure RPC contexts end before resource RPCs. Token refresh
+	// must outlive Configure, while token HTTP requests still have a deadline.
+	authHTTP := &http.Client{Timeout: 60 * time.Second}
+	if existing, ok := ctx.Value(oauth2.HTTPClient).(*http.Client); ok {
+		copy := *existing
+		copy.Timeout = 60 * time.Second
+		authHTTP = &copy
+	}
+	ctx = context.WithValue(context.WithoutCancel(ctx), oauth2.HTTPClient, authHTTP)
 	var ts oauth2.TokenSource
 	switch {
 	case a.AccessToken != "":

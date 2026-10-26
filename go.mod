@@ -1,4 +1,4 @@
-module github.com/linyiru/terraform-provider-gdrive
+module github.com/solcreek/terraform-provider-gdrive
 
 go 1.26.0
 

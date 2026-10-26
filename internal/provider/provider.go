@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/linyiru/terraform-provider-gdrive/internal/drive"
+	"github.com/solcreek/terraform-provider-gdrive/internal/drive"
 )
 
 type GDriveProvider struct{ version string }

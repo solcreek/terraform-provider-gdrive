@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/linyiru/terraform-provider-gdrive/internal/drive"
+	"github.com/solcreek/terraform-provider-gdrive/internal/drive"
 	api "google.golang.org/api/drive/v3"
 )
 

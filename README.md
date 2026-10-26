@@ -2,7 +2,7 @@
 
 An independently implemented, MPL-2.0 provider focused on Google Workspace Shared Drive administration.
 
-This project is under development and has not been released to either registry. The development source address is `registry.terraform.io/linyiru/gdrive`; it does not imply a published package.
+This project is under development and has not been released to either registry. The development source address is `registry.opentofu.org/solcreek/gdrive`; it does not imply a published package.
 
 ## Scope
 

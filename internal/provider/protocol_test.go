@@ -15,7 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/linyiru/terraform-provider-gdrive/internal/drive"
+	"github.com/solcreek/terraform-provider-gdrive/internal/drive"
 	"google.golang.org/api/option"
 )
 

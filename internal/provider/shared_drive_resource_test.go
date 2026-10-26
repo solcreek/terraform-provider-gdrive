@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/linyiru/terraform-provider-gdrive/internal/drive"
+	"github.com/solcreek/terraform-provider-gdrive/internal/drive"
 	"google.golang.org/api/option"
 )
 

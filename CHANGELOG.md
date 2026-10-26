@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fix permission listing against the live Drive API. The first page sent an empty `pageToken`, which Drive rejects with 403 `pageTokenExpired`. That broke the `gdrive_permissions` data source and `gdrive_permission` creation, both of which list existing grants. Verified read-only against a real Workspace Shared Drive.
+
 ## 0.1.0
 
 Initial experimental release. Local contract and provider-protocol tests cover Terraform and OpenTofu. Live Google Workspace acceptance remains outstanding.

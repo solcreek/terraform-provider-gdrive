@@ -102,6 +102,10 @@ func TestPermissionsPagination(t *testing.T) {
 			t.Error("missing Shared Drive/admin flags")
 		}
 		if calls == 1 {
+			// Drive rejects an empty pageToken with 403 pageTokenExpired.
+			if q.Has("pageToken") {
+				t.Errorf("first page sent pageToken=%q", q.Get("pageToken"))
+			}
 			fmt.Fprint(w, `{"permissions":[{"id":"a"}],"nextPageToken":"next"}`)
 		} else {
 			if q.Get("pageToken") != "next" {

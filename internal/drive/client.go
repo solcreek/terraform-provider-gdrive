@@ -203,7 +203,12 @@ func (c *Client) Permissions(ctx context.Context, file string, admin bool) ([]*a
 		var page *api.PermissionList
 		err := c.call(ctx, true, func() error {
 			var e error
-			page, e = c.Service.Permissions.List(file).SupportsAllDrives(true).UseDomainAdminAccess(admin).PageSize(100).PageToken(token).Fields(googleapi.Field("nextPageToken,permissions(" + PermissionFields + ")")).Context(ctx).Do()
+			call := c.Service.Permissions.List(file).SupportsAllDrives(true).UseDomainAdminAccess(admin).PageSize(100).Fields(googleapi.Field("nextPageToken,permissions(" + PermissionFields + ")"))
+			// The SDK sends PageToken("") as pageToken=, which Drive rejects as an expired token.
+			if token != "" {
+				call = call.PageToken(token)
+			}
+			page, e = call.Context(ctx).Do()
 			return e
 		})
 		if err != nil {

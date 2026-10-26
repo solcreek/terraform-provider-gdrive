@@ -58,6 +58,8 @@ The release layout follows `solcreek/terraform-provider-gandi`: per-platform ZIP
 
 The signing fingerprint must match the key already registered for Solcreek in the OpenTofu registry: `2DF6EA201129324B19FFCCD6CF721E16E07047D5`. Never replace it without updating the registry key registration.
 
+`scripts/repo-settings.sh` checks immutable releases and the `v*` tag ruleset; use `--apply` with repository administrator access to configure them. These settings prevent published artifacts and release tags from being replaced. They do not restrict the development branch.
+
 The initial experimental release documents the outstanding live tests. A production-ready release must pass those live gates. Once a version is published and indexed, do not move its tag or replace artifacts; issue a new version instead.
 
 The first OpenTofu registration must be submitted using [the registry's GitHub issue form](https://github.com/opentofu/registry/issues/new?template=provider.yml&title=Provider%3A%20solcreek%2Fgdrive&repository=solcreek%2Fterraform-provider-gdrive). The form's processing pipeline explicitly requires the browser form rather than an API-created issue. Subsequent releases are discovered automatically after registration.

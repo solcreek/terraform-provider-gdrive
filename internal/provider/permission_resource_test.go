@@ -45,3 +45,26 @@ func TestPermissionImportRejectsMalformedIDs(t *testing.T) {
 		}
 	}
 }
+
+func TestPermissionCreateRequiresImportOfExistingGrant(t *testing.T) {
+	calls := 0
+	r := &permissionResource{resourceBase{testAPI(t, func(w http.ResponseWriter, r *http.Request) {
+		calls++
+		if r.Method != "GET" {
+			t.Error("existing grant was mutated")
+		}
+		fmt.Fprint(w, `{"permissions":[{"id":"p","type":"group","emailAddress":"team@example.com","role":"reader"}]}`)
+	})}}
+	ctx := context.Background()
+	var sr resource.SchemaResponse
+	r.Schema(ctx, resource.SchemaRequest{}, &sr)
+	plan := tfsdk.Plan{Schema: sr.Schema}
+	if d := plan.Set(ctx, &permissionModel{FileID: types.StringValue("drive"), Type: types.StringValue("group"), Email: types.StringValue("team@example.com"), Role: types.StringValue("writer")}); d.HasError() {
+		t.Fatal(d)
+	}
+	res := resource.CreateResponse{State: tfsdk.State{Schema: sr.Schema}}
+	r.Create(ctx, resource.CreateRequest{Plan: plan}, &res)
+	if !res.Diagnostics.HasError() || calls != 1 {
+		t.Fatalf("existing grant was not rejected: %v", res.Diagnostics)
+	}
+}

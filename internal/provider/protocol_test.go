@@ -131,6 +131,12 @@ func (f *fakeDrive) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					missing()
 				}
 			} else {
+				// Mirrors the live API, which rejects an empty pageToken.
+				if q := r.URL.Query(); q.Has("pageToken") && q.Get("pageToken") == "" {
+					w.WriteHeader(403)
+					write(map[string]any{"error": map[string]any{"code": 403, "message": "The specified page token has expired, and can no longer be used.", "errors": []map[string]any{{"reason": "pageTokenExpired"}}}})
+					return
+				}
 				list := []map[string]any{}
 				for _, v := range perms {
 					list = append(list, v)

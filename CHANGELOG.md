@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.1
 
 - Fix permission listing against the live Drive API. The first page sent an empty `pageToken`, which Drive rejects with 403 `pageTokenExpired`. That broke the `gdrive_permissions` data source and `gdrive_permission` creation, both of which list existing grants. Verified read-only against a real Workspace Shared Drive.
 

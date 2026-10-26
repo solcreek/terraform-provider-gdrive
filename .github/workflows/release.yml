@@ -33,10 +33,23 @@ jobs:
         env:
           FINGERPRINT: ${{ steps.gpg.outputs.fingerprint }}
         run: test "$FINGERPRINT" = '2DF6EA201129324B19FFCCD6CF721E16E07047D5'
+      - name: Extract release notes from CHANGELOG.md
+        env:
+          VERSION: ${{ github.ref_name }}
+        run: |
+          awk -v want="## ${VERSION#v}" '
+            $0 == want { found = 1; next }
+            found && /^## / { exit }
+            found { print }
+          ' CHANGELOG.md > "$RUNNER_TEMP/release-notes.md"
+          if ! grep -q '[^[:space:]]' "$RUNNER_TEMP/release-notes.md"; then
+            echo "::error::CHANGELOG.md has no entry for ${VERSION#v}"
+            exit 1
+          fi
       - uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # v6
         with:
           version: v2.17.1
-          args: release --clean
+          args: release --clean --release-notes ${{ runner.temp }}/release-notes.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: ${{ steps.gpg.outputs.fingerprint }}

@@ -18,8 +18,8 @@ fmt-check:
 generate:
 	$(TFPLUGINDOCS) generate --provider-name gdrive
 licenses:
-	$(GO_LICENSES) save ./... --save_path=.licenses --force --ignore=github.com/solcreek/terraform-provider-gdrive
+	$(GO_LICENSES) save ./... --save_path=third_party --force --ignore=github.com/solcreek/terraform-provider-gdrive
 license-check:
-	$(GO_LICENSES) check ./... --allowed_licenses=MPL-2.0,Apache-2.0,BSD-2-Clause,BSD-3-Clause,MIT,ISC
+	$(GO_LICENSES) check --include_tests ./... --allowed_licenses=MPL-2.0,Apache-2.0,BSD-2-Clause,BSD-3-Clause,MIT,ISC,Unicode-DFS-2016
 vulncheck:
 	go run golang.org/x/vuln/cmd/govulncheck@v1.9.0 ./...

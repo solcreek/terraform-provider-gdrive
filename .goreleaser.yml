@@ -25,9 +25,7 @@ archives:
       - LICENSE
       - README.md
       - NOTICE
-      - src: .licenses/**
-        dst: third_party
-        strip_parent: true
+      - third_party/**
 
 checksum:
   algorithm: sha256

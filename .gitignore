@@ -10,6 +10,6 @@ crash.log
 /dependency-licenses.json
 /terraform-provider-gdrive
 *.test
-/.licenses/
+/third_party/
 /dist/
 /.terraformrc.dev
